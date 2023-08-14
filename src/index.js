@@ -1,32 +1,42 @@
-//create div with id ramen-menu wait nvmn it already exists
+const url = "http://localhost:3000/ramens";
+const ramenMenDiv = document.getElementById("ramen-menu");
+const ramenDetailDiv = document.getElementById("ramen-detail");
+const ramenForm = document.getElementById("new-ramen");
+const detailImg = document.getElementById("detail-image");
+const detailRest = document.getElementById("restaurant");
+const detailName = document.getElementById("name");
+const rating = document.getElementById("rating-display");
+const comment = document.getElementById("comment-display");
 
-//eventListener on pageload, do a fetch request with e.preventDefault
-document.addEventListener("DOMContentLoaded", async (renderDiv) => {
-  const response = await fetch("http://localhost:3000/ramens");
-  const ramens = await response.json();
-  console.log(ramens);
-});
+//fetch request
+fetch(url)
+  .then((response) => response.json())
+  .then((data) => {
+    data.forEach((data) => {
+      let ramenImg = document.createElement("img");
+      ramenImg.src = data.image;
+      ramenMenDiv.appendChild(ramenImg);
+      ramenImg.addEventListener("click", (e) => {
+        //display hero image on click
+        detailImg.src = data.image;
+        detailRest.textContent = data.restaurant;
+        detailName.textContent = data.name;
+        rating.textContent = data.rating;
+        comment.textContent = data.comment;
+      });
+    });
+  });
 
-//put all images in the div with the id
-function renderDiv() {
-  let ramenDiv = document.getElementById("ramen-menu");
-  //now we've got it, how do we make it bigger and put space inside for the fetched images?
-  //ramenDiv.append();
-  for (const i = 0; i < DataTransfer.length; i++) {
-    let imgs = document.createElement("img");
-    mainContainer.appendChild(ramenDiv);
-  }
-}
-//display image for each using img tag inside #ramen-menu div
-/*
-addEventListener("click", () => {
+//  Create a new ramen after submitting the new-ramen form.
+ramenForm.addEventListener("submit", (e) => {
   e.preventDefault();
-  //click on image in #ramen-menu div and see:
-  //all ramen information in #ramen-detail div where it says "comment"/"rating"
+  let newRamenName = e.target.name.value;
+  let newRamenRest = e.target.restaurant.value;
+  let newRamenImg = e.target.image.value;
+  let newRamenImage = document.createElement("img");
+  newRamenImage.src = newRamenImg;
+  let newRamenRating = e.target.rating.value;
+  let newRamenComment = e.target["new-comment"].value;
+  ramenMenDiv.append(newRamenImage);
 });
-
-addEventListener("submit", () => {
-  e.preventDefault();
-  //create new ramen after submitting the ramen form added to #ramen-menu div
-  //doesn't persist
-});*/
+//The new ramen should be added to the#ramen-menu div.
